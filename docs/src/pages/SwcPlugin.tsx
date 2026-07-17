@@ -13,11 +13,11 @@ export default function SwcPlugin(): React.JSX.Element {
       dualModern:
         'cassida_swc_plugin.wasm — built against swc_core 66.x. Used by Rspack, @swc/core, and @vitejs/plugin-react-swc.',
       dualNext:
-        'cassida_swc_plugin.next.wasm — built against swc_core 35.0.0. Used by @next/swc 15.x (Next.js 15 LTS).',
+        'cassida_swc_plugin.next.wasm — built against swc_core 57.0.0. Used by @next/swc 16.2.x (current stable Next.js).',
       dualEntry:
         'The exports map ("." → modern, "./next" → next-targeted) is what lets @cassida/next-plugin pick the correct artefact at config time. Direct consumers (Rspack, @swc/core) import from "@cassida/swc-plugin" and get the modern one.',
       driftHeading: 'ABI drift policy',
-      driftCopy: 'Next.js bumps the embedded swc_core periodically — the SWC plugin\'s Next.js-targeted build pinned to 35.0.0 will drift out of alignment with the latest LTS. A weekly GitHub Actions cron compares the pin against the latest Next.js 15 release and opens a tracking issue when they diverge. The intent is that older Next.js majors break first if anything breaks; the LTS line stays aligned.',
+      driftCopy: 'Next.js bumps the embedded swc_core periodically — the SWC plugin\'s Next.js-targeted build pinned to 57.0.0 will drift out of alignment with the latest stable release. A weekly GitHub Actions cron compares the pin against the latest stable Next.js release and opens a tracking issue when they diverge. The intent is that older Next.js majors break first if anything breaks; the current stable line stays aligned.',
       routesHeading: 'Three install routes',
       routesNextHeading: 'Through @cassida/next-plugin (default for Next.js users)',
       routesNextCopy: 'You do not install @cassida/swc-plugin directly. It comes in as a transitive dependency of @cassida/next-plugin, which wires the "./next" entry into experimental.swcPlugins for you.',
@@ -36,11 +36,11 @@ export default function SwcPlugin(): React.JSX.Element {
       dualModern:
         'cassida_swc_plugin.wasm：swc_core 66.x を前提にビルド。Rspack、@swc/core、@vitejs/plugin-react-swc などが対象。',
       dualNext:
-        'cassida_swc_plugin.next.wasm：swc_core 35.0.0 を前提にビルド。@next/swc 15.x (Next.js 15 LTS) が対象。',
+        'cassida_swc_plugin.next.wasm：swc_core 57.0.0 を前提にビルド。@next/swc 16.2.x (現行 stable の Next.js) が対象。',
       dualEntry:
         'exports map ("." → modern、"./next" → next 向け) を @cassida/next-plugin が config 時に正しい方を選び取る材料にしている。Rspack や @swc/core から直接読む場合は "@cassida/swc-plugin" を import すれば modern 版になる。',
       driftHeading: 'ABI drift ポリシー',
-      driftCopy: 'Next.js は埋め込み swc_core を定期的に上げる。SWC プラグインの Next.js 向けビルドが pin している 35.0.0 は、最新の LTS と少しずつズレていく。毎週の GitHub Actions cron が、現行の Next.js 15 リリースに含まれる swc_core 版数と pin を比較し、ズレた瞬間に tracking issue を立てる。基本姿勢は「壊れるなら古い Next.js major から壊れる、LTS のラインは常に揃え続ける」というものだ。',
+      driftCopy: 'Next.js は埋め込み swc_core を定期的に上げる。SWC プラグインの Next.js 向けビルドが pin している 57.0.0 は、最新の stable と少しずつズレていく。毎週の GitHub Actions cron が、現行 stable の Next.js リリースに含まれる swc_core 版数と pin を比較し、ズレた瞬間に tracking issue を立てる。基本姿勢は「壊れるなら古い Next.js major から壊れる、現行 stable のラインは常に揃え続ける」というものだ。',
       routesHeading: '3 つの install ルート',
       routesNextHeading: '@cassida/next-plugin 経由 (Next.js ユーザーの既定)',
       routesNextCopy: '@cassida/swc-plugin を直接 install することはない。@cassida/next-plugin の transitive 依存として一緒に入り、next-plugin が "./next" エントリを experimental.swcPlugins に登録する。',

@@ -6,11 +6,13 @@ Next.js integration for Cassida. One-line drop-in for `next.config.js` that wire
 
 ## Supported Next.js versions
 
-Cassida supports the current Next.js LTS release only (15.x at the time of writing). Earlier majors aren't tested in CI; future bumps in `@next/swc`'s embedded `swc_core` may break older Next.js installs of `@cassida/next-plugin` without notice.
+Cassida supports the current stable Next.js release only (16.2.x at the time of writing). Earlier majors aren't tested in CI; future bumps in `@next/swc`'s embedded `swc_core` may break older Next.js installs of `@cassida/next-plugin` without notice.
 
-The `@cassida/swc-plugin` package ships two ABI-pinned WASM artefacts — the next-targeted one tracks the `swc_core` pinned by the current Next.js LTS, and won't be backported when Next.js bumps its `swc_core` in a future release.
+**Next.js 15 is no longer supported.** The next-targeted WASM is pinned to the `swc_core` embedded in Next.js 16.2 (57.0.0); on Next.js 15 (swc_core 35) it fails to load with `failed to invoke plugin`. Next.js 15 apps must stay on the last Cassida release published before the repin.
 
-**Enforcement.** A weekly cron in this repo ([`.github/workflows/swc-core-drift.yml`](../../.github/workflows/swc-core-drift.yml)) watches the `swc_core` version embedded in the current Next.js LTS release. When the pin drifts, an issue is auto-opened on this repo with the `Cassida-Phase-1.5` label so the `@cassida/swc-plugin-next` crate can be bumped before consumers' Next.js upgrades break.
+The `@cassida/swc-plugin` package ships two ABI-pinned WASM artefacts — the next-targeted one tracks the `swc_core` pinned by the current stable Next.js release, and won't be backported when Next.js bumps its `swc_core` in a future release.
+
+**Enforcement.** A weekly cron in this repo ([`.github/workflows/swc-core-drift.yml`](../../.github/workflows/swc-core-drift.yml)) watches the `swc_core` version embedded in the current stable Next.js release. When the pin drifts, an issue is auto-opened on this repo with the `Cassida-Phase-1.5` label so the `@cassida/swc-plugin-next` crate can be bumped before consumers' Next.js upgrades break.
 
 ## Install
 
