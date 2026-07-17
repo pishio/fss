@@ -7,6 +7,7 @@ const withCard = (c: CassChain) =>
 
 export function App() {
   const [hue, setHue] = useState(180);
+  const [muted, setMuted] = useState(false);
 
   return (
     <main {...cas().padding(24).maxWidth(720).props}>
@@ -15,6 +16,42 @@ export function App() {
       <section {...withCard(cas()).props}>
         <p {...cas().margin(0).fontSize(14).props}>Static chain compiles to a class.</p>
       </section>
+
+      {/* `.cond()` fed through same-file composition — the branch
+          placeholders must survive tryFunctionComposition and expand
+          into build-time Cartesian leaves (ternary className), never
+          the runtime fallback. The branches set `opacity`, which the
+          mixin body doesn't touch, so LIFO collapse can't merge the
+          two leaves into one.
+
+          Do NOT port this section to e2e/next-app until #81 lands:
+          the SWC walker still runtime-falls-back on cond/composition,
+          which would trip that fixture's zero-runtime assertion. */}
+      <section
+        {...withCard(
+          cas().cond(
+            muted,
+            (c) => c.opacity(0.55),
+            (c) => c.opacity(1),
+          ),
+        ).props}
+      >
+        <p {...cas().margin(0).fontSize(14).props}>
+          Composed cond: {muted ? 'muted' : 'full'} card.
+        </p>
+      </section>
+
+      {/* Omitted-falsy variant — the false side materialises an empty
+          leaf, exercising the empty-bag class through the emitter and
+          the lightningcss pass (an empty rule may be stripped; the
+          ternary still references the class, which is benign). */}
+      <p
+        {...withCard(cas().cond(muted, (c) => c.letterSpacing(0.5))).props}
+      >
+        Composed cond, omitted falsy.
+      </p>
+
+      <button onClick={() => setMuted((m) => !m)}>toggle muted</button>
 
       {/* Modifier scope (:hover) — must produce a single class with a
           nested rule, never a separate selector. */}
