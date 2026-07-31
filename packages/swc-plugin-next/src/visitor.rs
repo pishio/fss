@@ -166,11 +166,9 @@ fn try_rewrite_spread<C: Comments>(
     };
     let placeholder_lit = Str {
         span: placeholder_span,
-        // swc_core 35.0.0: `Str::value` is `JsWord` (= `Atom`); no
-        // `.into()` needed. (Adapter site #7 vs the modern crate,
-        // where `Str::value` is a `Wtf8Atom` and the conversion is
-        // load-bearing.)
-        value: Atom::from(placeholder_value.as_str()),
+        // `Str::value` is a Wtf8Atom; convert from the regular Atom
+        // via `Into` since our string is plain ASCII.
+        value: Atom::from(placeholder_value.as_str()).into(),
         raw: None,
     };
 
@@ -226,11 +224,7 @@ fn collect_chain_roots_from_import(decl: &ImportDecl, roots: &mut ChainRoots) {
     if decl.type_only {
         return;
     }
-    // swc_core 35.0.0: `Atom::as_str()` returns `&str` directly (no
-    // surrogate-pair concern at this version). The sibling
-    // `cassida_swc_plugin` crate sits on swc_core 66.x where the
-    // return type widened to `Option<&str>` — adapter site #1.
-    if decl.src.value.as_str() != DEFAULT_IMPORT_SOURCE {
+    if decl.src.value.as_str() != Some(DEFAULT_IMPORT_SOURCE) {
         return;
     }
     for spec in &decl.specifiers {
@@ -253,8 +247,10 @@ fn collect_chain_roots_from_import(decl: &ImportDecl, roots: &mut ChainRoots) {
                 let imported_name: &str = match &named.imported {
                     Some(imported) => match imported {
                         swc_core::ecma::ast::ModuleExportName::Ident(id) => id.sym.as_str(),
-                        // Adapter site #2 (see lib.rs `as_str` note).
-                        swc_core::ecma::ast::ModuleExportName::Str(s) => s.value.as_str(),
+                        swc_core::ecma::ast::ModuleExportName::Str(s) => match s.value.as_str() {
+                            Some(v) => v,
+                            None => continue,
+                        },
                     },
                     None => named.local.sym.as_str(),
                 };

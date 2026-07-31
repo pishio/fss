@@ -12,8 +12,8 @@ export declare const wasmPathModern: string;
 
 /**
  * Absolute filesystem path to the Next.js-targeted SWC plugin WASM
- * artefact (built against swc_core 35.0.0). ABI-compatible with the
- * `@next/swc` binary shipped in Next.js 15.x. Use this from inside
+ * artefact (built against swc_core 57.0.0). ABI-compatible with the
+ * `@next/swc` binary shipped in Next.js 16.2.x. Use this from inside
  * `@cassida/next-plugin` or any other Next.js integration.
  */
 export declare const wasmPathNext: string;

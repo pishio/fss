@@ -12,7 +12,7 @@ export default function NextSetup(): React.JSX.Element {
       constraintsAppRouter:
         'App Router only. Pages Router has no @cassida/next-plugin entry; Server Components and Server Actions are part of the bridge that delivers styles into the client bundle.',
       constraintsLts:
-        'Next.js 15 LTS only. Older majors are not tested in CI and may break silently when @next/swc bumps its embedded swc_core. The dual-WASM build follows the LTS line.',
+        'Next.js 16.2.x only. The next-targeted WASM is ABI-pinned to the swc_core embedded in Next.js 16.2 (57.0.0), so Next.js 15 and older cannot load it — stay on the last Cassida release published before the repin. The dual-WASM build follows the current stable Next.js line.',
       constraintsTurbopack:
         'Webpack only for now. Turbopack support is queued behind Phase 1.5 — the webpack-virtual-modules plumbing that delivers virtual.css does not exist in Turbopack yet.',
       installHeading: 'Install',
@@ -25,7 +25,7 @@ export default function NextSetup(): React.JSX.Element {
       deeperHeading: 'Going deeper',
       deeperCopy: 'The Quick Start above is what 95% of users need. If you want to know what the SWC plugin does, what the webpack plugin emits, or how server-only styles reach the client bundle, the @cassida/swc-plugin and @cassida/next-plugin pages explain the internals.',
       monorepoHeading: 'Monorepo with output: \'standalone\'',
-      monorepoCopy: 'If your Next.js app sits inside a monorepo with output: \'standalone\', set outputFileTracingRoot to the monorepo root, not to the app directory. Setting it to the app directory silences Next.js 15\'s "multiple lockfiles" warning but silently drops @cassida/* from the standalone bundle\'s node_modules tree.',
+      monorepoCopy: 'If your Next.js app sits inside a monorepo with output: \'standalone\', set outputFileTracingRoot to the monorepo root, not to the app directory. Setting it to the app directory silences Next.js\'s "multiple lockfiles" warning but silently drops @cassida/* from the standalone bundle\'s node_modules tree.',
     },
     ja: {
       title: 'Next.js セットアップ',
@@ -34,7 +34,7 @@ export default function NextSetup(): React.JSX.Element {
       constraintsAppRouter:
         'App Router 専用。Pages Router 用の @cassida/next-plugin エントリは無い。Server Component と Server Action から書かれたスタイルもクライアントの bundle まで届けるための bridge が前提になるため、App Router の構造に依存している。',
       constraintsLts:
-        'Next.js 15 LTS のみ対応。それより古い major は CI で検証しておらず、@next/swc に埋め込まれた swc_core のバージョンが上がった瞬間に silently 壊れる可能性がある。dual-WASM ビルドは LTS のラインに追従している。',
+        'Next.js 16.2 系のみ対応。Next.js 向け WASM は Next.js 16.2 が埋め込む swc_core (57.0.0) に ABI を pin しているため、Next.js 15 以前では読み込めない。15 系のアプリは repin 前の最後の Cassida リリースに留まること。dual-WASM ビルドは現行 stable の Next.js ラインに追従する。',
       constraintsTurbopack:
         '現在は webpack のみ。Turbopack 対応は Phase 1.5 に積まれている。virtual.css を配信している webpack-virtual-modules 相当の仕組みが、まだ Turbopack 側に存在しないため。',
       installHeading: 'インストール',
@@ -47,7 +47,7 @@ export default function NextSetup(): React.JSX.Element {
       deeperHeading: 'さらに深く知る',
       deeperCopy: '上の Quick Start で 95% のユーザーは十分。SWC プラグインが何をしているか、webpack プラグインが何を emit しているか、サーバ側だけで書かれたスタイルがどうクライアント bundle に届くか。これらが知りたいときは @cassida/swc-plugin と @cassida/next-plugin のページに internals が書いてある。',
       monorepoHeading: 'monorepo + output: \'standalone\' の組み合わせ',
-      monorepoCopy: 'Next.js アプリが monorepo の中にあって output: \'standalone\' を使う場合、outputFileTracingRoot は monorepo のルートに設定する。アプリのディレクトリに設定すると Next.js 15 の "multiple lockfiles" 警告は消えるが、standalone bundle の node_modules ツリーから @cassida/* が黙って落ちる。',
+      monorepoCopy: 'Next.js アプリが monorepo の中にあって output: \'standalone\' を使う場合、outputFileTracingRoot は monorepo のルートに設定する。アプリのディレクトリに設定すると Next.js の "multiple lockfiles" 警告は消えるが、standalone bundle の node_modules ツリーから @cassida/* が黙って落ちる。',
     },
   });
 

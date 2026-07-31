@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Cassida SWC plugin — Next.js-targeted build. Same transform as `cassida_swc_plugin`, but pinned to `swc_core = 35.0.0` so the resulting WASM is ABI-compatible with the `@next/swc` binary shipped in Next.js 15.x. The `cassida_swc_plugin` crate stays on the latest `swc_core` (currently 66.x) for Rspack / @swc/core / plugin-react-swc consumers. Sharing this source via `include!` keeps the two crates' transforms identical."
+description = "Cassida SWC plugin — Next.js-targeted build. Same transform as `cassida_swc_plugin`, but pinned to `swc_core = 57.0.0` so the resulting WASM is ABI-compatible with the `@next/swc` binary shipped in Next.js 16.x (16.2.x stable). The `cassida_swc_plugin` crate stays on the latest `swc_core` (currently 66.x) for Rspack / @swc/core / plugin-react-swc consumers. The two crates keep byte-identical transform sources apart from swc_core-version adapter sites."
 
 [lib]
 crate-type = ["cdylib"]
@@ -14,8 +14,10 @@ crate-type = ["cdylib"]
 # so this crate can sit on a different swc_core major than its sibling
 # `cassida_swc_plugin`. The version must match whatever `@next/swc`
 # ships in the supported Next.js release; bump in lockstep with Next.
+# Next.js 16.2.x (stable) links @next/swc against swc_core 57.0.0;
+# 16.3 preview moved to 69.0.0 — re-pin here if that becomes stable.
 [dependencies]
-swc_core = { version = "=35.0.0", features = [
+swc_core = { version = "=57.0.0", features = [
   "common",
   "ecma_ast",
   "ecma_visit",
@@ -27,7 +29,7 @@ serde_json = { workspace = true }
 smol_str = { workspace = true }
 
 [dev-dependencies]
-swc_core = { version = "=35.0.0", features = [
+swc_core = { version = "=57.0.0", features = [
   "common",
   "ecma_ast",
   "ecma_visit",

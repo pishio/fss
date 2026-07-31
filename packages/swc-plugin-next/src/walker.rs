@@ -294,13 +294,12 @@ fn arrow_param_root(arrow: &ArrowExpr) -> Option<Atom> {
 }
 
 /// Extract a string from a literal expression — either `'foo'` or
-/// a substitution-free `` `foo` ``. swc_core 35.0.0 uses `JsWord`
-/// (UTF-8 only); the surrogate-pair bail of the modern crate's
-/// `Wtf8Atom` doesn't apply here.
+/// a substitution-free `` `foo` ``. `Wtf8Atom::as_str` returns `None`
+/// on lone surrogates; we bail in that case (caller falls back to the
+/// runtime path).
 fn literal_string(expr: &Expr) -> Option<String> {
     match expr {
-        // Adapter site #3 (see lib.rs `as_str` note).
-        Expr::Lit(Lit::Str(s)) => Some(s.value.as_str().to_string()),
+        Expr::Lit(Lit::Str(s)) => s.value.as_str().map(String::from),
         Expr::Tpl(tpl) => tpl_to_static_string(tpl),
         _ => None,
     }
@@ -317,8 +316,7 @@ fn literal_string(expr: &Expr) -> Option<String> {
 /// where `JSON.stringify` itself isn't byte-stable either.
 fn literal_string_or_number(expr: &Expr) -> Option<String> {
     match expr {
-        // Adapter site #4 (see lib.rs `as_str` note).
-        Expr::Lit(Lit::Str(s)) => Some(s.value.as_str().to_string()),
+        Expr::Lit(Lit::Str(s)) => s.value.as_str().map(String::from),
         Expr::Tpl(tpl) => tpl_to_static_string(tpl),
         Expr::Lit(Lit::Num(n)) => {
             let v = n.value;
@@ -352,8 +350,7 @@ fn tpl_to_static_string(tpl: &Tpl) -> Option<String> {
         return None;
     }
     let cooked = tpl.quasis[0].cooked.as_ref()?;
-    // Adapter site #5 (see lib.rs `as_str` note).
-    Some(cooked.as_str().to_string())
+    cooked.as_str().map(String::from)
 }
 
 /// Project a literal AST node into a JSON value matching the
@@ -361,8 +358,10 @@ fn tpl_to_static_string(tpl: &Tpl) -> Option<String> {
 /// anything Phase 1 can't statically fold.
 fn literal_to_json(expr: &Expr) -> Option<serde_json::Value> {
     match expr {
-        // Adapter site #6 (see lib.rs `as_str` note).
-        Expr::Lit(Lit::Str(s)) => Some(serde_json::Value::String(s.value.as_str().to_string())),
+        Expr::Lit(Lit::Str(s)) => s
+            .value
+            .as_str()
+            .map(|s| serde_json::Value::String(s.to_string())),
         Expr::Lit(Lit::Num(n)) => Some(serde_json::Value::Number(num_to_json(n.value)?)),
         Expr::Lit(Lit::Bool(b)) => Some(serde_json::Value::Bool(b.value)),
         Expr::Lit(Lit::Null(_)) => Some(serde_json::Value::Null),

@@ -205,7 +205,7 @@ function getWasmPath(): string {
 /**
  * Cassida's CSS bridge is webpack-only: it emits `virtual.css` through a
  * `CassidaWebpackPlugin` tap. Under Turbopack (the default bundler for
- * `next dev` / `next build` since Next.js 15) the webpack config is never
+ * `next dev` / `next build` since Next.js 16) the webpack config is never
  * consulted, so the bridge never runs and the page ships with no Cassida
  * CSS. Detect that at config time and fail loud with the remedy, rather
  * than letting the styles silently vanish.
@@ -339,7 +339,7 @@ function getRequire(): NodeRequire {
  * subpath. `@cassida/swc-plugin` ships two builds (modern for
  * Rspack / @swc/core mainline, next for `@next/swc`) — we deliberately
  * pick `wasmPathNext` because the SWC plugin ABI is version-bound to
- * the host's swc_core and Next.js 15.x pins swc_core 35.0.0, which
+ * the host's swc_core and Next.js 16.2.x pins swc_core 57.0.0, which
  * the modern (66.x) WASM is not ABI-compatible with. Loading the
  * wrong build manifests as "failed to invoke plugin" on every file.
  *

@@ -4,8 +4,8 @@
 //   • `wasmPath` / `wasmPathModern` — built against swc_core 66.x.
 //     ABI-compatible with Rspack, @swc/core mainline, swc-loader,
 //     swc-node, @vitejs/plugin-react-swc.
-//   • `wasmPathNext` — built against swc_core 35.0.0. ABI-compatible
-//     with `@next/swc` shipped in Next.js 15.x. Use this from inside
+//   • `wasmPathNext` — built against swc_core 57.0.0. ABI-compatible
+//     with `@next/swc` shipped in Next.js 16.2.x. Use this from inside
 //     `@cassida/next-plugin` / any other Next.js integration.
 //
 // Pairs with the CommonJS sibling for dual-format consumption.
